@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Kitchen Display</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:black;
+color:white;
+margin:0;
+}
+
+.orders{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card{
+background:#222;
+padding:20px;
+border-radius:10px;
+}
+
+h2{
+margin-top:0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1 style="padding:20px">Kitchen Orders</h1>
+
+<div class="orders" id="orders"></div>
+
+<script>
+
+var API="http://127.0.0.1:8000"
+
+function load(){
+
+fetch(API+"/admin/orders")
+.then(r=>r.json())
+.then(data=>{
+
+let html=""
+
+data
+.filter(o=>o.status!="Delivered")
+.forEach(o=>{
+
+let items=""
+
+o.items.forEach(i=>{
+items+=`${i.name} x${i.qty}<br>`
+})
+
+html+=`
+
+<div class="card">
+
+<h2>${o.order_number}</h2>
+
+${items}
+
+</div>
+
+`
+
+})
+
+document.getElementById("orders").innerHTML=html
+
+})
+
+}
+
+load()
+
+setInterval(load,3000)
+
+</script>
+
+</body>
+</html>

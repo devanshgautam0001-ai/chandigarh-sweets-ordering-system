@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Restaurant Admin</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f4f4f4;
+}
+
+.topbar{
+background:#111;
+color:white;
+padding:15px;
+display:flex;
+justify-content:space-between;
+}
+
+.orders{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.status{
+padding:4px 10px;
+border-radius:20px;
+font-size:12px;
+}
+
+.pending{background:#ffc107}
+.preparing{background:#2196f3;color:white}
+.ready{background:#4caf50;color:white}
+.delivered{background:#777;color:white}
+
+button{
+background:#ff6b00;
+border:none;
+color:white;
+padding:6px 12px;
+margin-top:10px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+
+<h2>🍽 Chandigarh Sweets Admin</h2>
+
+<div id="revenue">Revenue ₹0</div>
+
+</div>
+
+<div class="orders" id="orders"></div>
+
+<audio id="sound" src="https://www.soundjay.com/buttons/sounds/beep-07.mp3"></audio>
+
+<script>
+
+if(localStorage.getItem("admin")!="true"){
+location="admin_login.html"
+}
+
+var API="http://127.0.0.1:8000"
+
+let lastOrder=0
+
+function loadOrders(){
+
+fetch(API+"/admin/orders")
+.then(r=>r.json())
+.then(data=>{
+
+let html=""
+let revenue=0
+
+data.forEach(o=>{
+
+revenue+=o.total_amount
+
+let items=""
+
+o.items.forEach(i=>{
+items+=`${i.name} x${i.qty}<br>`
+})
+
+let cls=o.status.toLowerCase()
+
+html+=`
+
+<div class="card">
+
+<h3>${o.order_number}</h3>
+
+<div>${items}</div>
+
+<p><b>${o.customer_name}</b></p>
+
+<p>₹${o.total_amount}</p>
+
+<div class="status ${cls}">
+${o.status}
+</div>
+
+<select id="s-${o.id}">
+<option ${o.status=="Pending"?"selected":""}>Pending</option>
+<option ${o.status=="Confirmed"?"selected":""}>Confirmed</option>
+<option ${o.status=="Preparing"?"selected":""}>Preparing</option>
+<option ${o.status=="Ready"?"selected":""}>Ready</option>
+<option ${o.status=="Delivered"?"selected":""}>Delivered</option>
+</select>
+
+<button onclick="update(${o.id})">Update</button>
+
+</div>
+
+`
+
+})
+
+document.getElementById("orders").innerHTML=html
+
+document.getElementById("revenue").innerText="Revenue ₹"+revenue
+
+if(data.length>lastOrder){
+document.getElementById("sound").play()
+}
+
+lastOrder=data.length
+
+})
+
+}
+
+function update(id){
+
+let status=document.getElementById("s-"+id).value
+
+fetch(API+"/admin/order/"+id+"/status?status="+status,{
+method:"PUT"
+})
+.then(()=>loadOrders())
+
+}
+
+loadOrders()
+
+setInterval(loadOrders,4000)
+
+</script>
+
+</body>
+</html>

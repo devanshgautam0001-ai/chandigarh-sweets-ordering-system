@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Orders</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:40px;
+}
+
+h1{
+margin-bottom:20px;
+}
+
+.order{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-bottom:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+button{
+padding:8px 12px;
+margin:5px;
+border:none;
+background:#ff5722;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Restaurant Orders</h1>
+
+<div id="orders"></div>
+
+<script>
+
+var API_URL = "http://127.0.0.1:8000";
+
+function loadOrders(){
+
+fetch(API_URL + "/admin/orders")
+.then(res => res.json())
+.then(data => {
+
+let html="";
+
+data.forEach(order => {
+
+html+=`
+<div class="order">
+
+<h3>Order ${order.order_number}</h3>
+
+<p><b>Name:</b> ${order.customer_name}</p>
+<p><b>Phone:</b> ${order.phone}</p>
+<p><b>Total:</b> ₹${order.total_amount}</p>
+<p><b>Status:</b> ${order.status}</p>
+
+<button onclick="updateStatus(${order.id},'Preparing')">Preparing</button>
+<button onclick="updateStatus(${order.id},'Ready')">Ready</button>
+<button onclick="updateStatus(${order.id},'Delivered')">Delivered</button>
+
+</div>
+`;
+
+});
+
+document.getElementById("orders").innerHTML=html;
+
+});
+
+}
+
+function updateStatus(id,status){
+
+fetch(API_URL + "/admin/order/"+id+"/status?status="+status,{
+method:"PUT"
+})
+.then(()=>loadOrders())
+
+}
+
+loadOrders();
+
+setInterval(loadOrders,5000);
+
+</script>
+
+</body>
+</html>

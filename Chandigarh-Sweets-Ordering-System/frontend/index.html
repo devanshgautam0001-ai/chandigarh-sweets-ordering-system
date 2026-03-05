@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chandigarh Sweets - Order Online</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-cookie-bite"></i> Chandigarh Sweets
+        </div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#menu">Menu</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="nav-search">
+        <input type="text" id="search-food" placeholder="Search food...">
+    </div>
+        <div class="cart-icon" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count">0</span>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Authentic Taste Since 1950</h1>
+            <p>Fresh Sweets • Premium Quality • Pickup & Delivery</p>
+            <a href="#menu" class="btn btn-primary">Order Now</a>
+        </div>
+    </section>
+    
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu-section">
+        <div class="section-title">
+            <h2>Our Menu</h2>
+        </div>
+        
+        <div class="category-tabs" id="category-tabs">
+            <!-- Categories yahan load honge -->
+        </div>
+
+        <div class="products-grid" id="products-container">
+            <!-- Products yahan load honge -->
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="about-section">
+        <h2>About Us</h2>
+        <p>Since 1950, Chandigarh Sweets has been serving the finest traditional Indian sweets and snacks.</p>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact-section">
+        <h2>Contact Us</h2>
+        <div class="contact-info">
+            <p><i class="fas fa-map-marker"></i> Shop No. 12, Sector 22, Chandigarh</p>
+            <p><i class="fas fa-phone"></i> +91 98765 43210</p>
+            <p><i class="fas fa-clock"></i> Open: 8:00 AM - 9:00 PM</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Chandigarh Sweets. All rights reserved.</p>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <span onclick="toggleCart()">&times;</span>
+        </div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total">₹0</span>
+            </div>
+            <button class="btn-checkout" onclick="showCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCheckout()">&times;</span>
+            <h2>Checkout</h2>
+            <form id="checkout-form" onsubmit="placeOrder(event)">
+                <div class="form-group">
+                    <label>Order Type</label>
+                    <select id="order-type" onchange="toggleDelivery()" required>
+                        <option value="pickup">Pickup</option>
+                        <option value="delivery">Delivery</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="delivery-address" style="display:none;">
+                    <label>Delivery Address</label>
+                    <textarea id="address" rows="2" placeholder="Full Address"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Your Name</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="customer-phone" required>
+                </div>
+                
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="checkout-items"></div>
+                    <div class="summary-total">
+                        <span>Total:</span>
+                        <span id="checkout-total">₹0</span>
+                    </div>
+                </div>
+                <div class="form-group">
+<label>Payment Method</label>
+
+<select id="payment-method" required>
+<option value="cod">Pay at Counter</option>
+<option value="upi">UPI Payment</option>
+</select>
+
+</div>
+                <button type="submit" class="btn-place-order">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content success-content">
+            <i class="fas fa-check-circle"></i>
+            <h2>Order Placed!</h2>
+            <p id="order-number">Order #CHS0001</p>
+            <p>Pickup within 30 minutes</p>
+            <button onclick="closeSuccess()">OK</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
