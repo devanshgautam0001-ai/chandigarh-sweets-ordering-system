@@ -1,5 +1,5 @@
 // ================= CONFIG =================
-var API_URL = "http://127.0.0.1:8000";
+var API_URL = "https://chandigarh-sweets-ordering-system-1.onrender.com";
 
 var allProducts = [];
 var cart = [];
@@ -463,5 +463,6 @@ document.getElementById("upi-box").style.display="block"
 document.getElementById("upi-box").style.display="none"
 
 }
+
 
 })
